@@ -3,7 +3,6 @@ import { Bson } from "../deps.ts";
 
 type ObjectId = Bson.ObjectId;
 
-/** Field Types. */
 export type FieldTypeString =
   | "bigInteger"
   | "integer"
@@ -20,7 +19,7 @@ export type FieldTypeString =
   | "time"
   | "timestamp"
   | "json"
-  | "array" //dont use this on sql ⚠
+  | "array"
   | "jsonb";
 
 export type FieldTypes =
@@ -39,25 +38,24 @@ export type FieldTypes =
   | "TIME"
   | "TIMESTAMP"
   | "JSON"
-  | "ARRAY" //dont use this on sql ⚠️
+  | "ARRAY"
   | "JSONB";
 
-export type Fields =
-  & {
-    [key in FieldTypes]: FieldTypeString;
-  }
-  & {
-    decimal: (precision: number, scale?: number) => {
-      type: FieldTypeString;
-      precision: number;
-      scale?: number;
-    };
-    string: (length: number) => { type: FieldTypeString; length: number };
-    enum: (
-      values: (number | string)[],
-    ) => { type: FieldTypeString; values: (number | string)[] };
-    integer: (length: number) => { type: FieldTypeString; length: number };
+export type Fields = {
+  [key in FieldTypes]: FieldTypeString;
+} & {
+  decimal: (precision: number, scale?: number) => {
+    type: FieldTypeString;
+    precision: number;
+    scale?: number;
   };
+  string: (length: number) => { type: FieldTypeString; length: number };
+  enum: (
+    values: (number | string)[]
+  ) => { type: FieldTypeString; values: (number | string)[] };
+  integer: (length: number) => { type: FieldTypeString; length: number };
+  array: (itemType: FieldTypeString) => { type: FieldTypeString; items: FieldTypeString };
+};
 
 export type FieldProps = {
   type?: FieldTypeString;
@@ -75,10 +73,10 @@ export type FieldProps = {
   comment?: string;
 };
 
-export type FieldType = FieldTypeString | FieldProps;
+export type FieldType = FieldTypeString | FieldProps | FieldProps[];
 
 export type FieldAlias = { [k: string]: string };
-export type FieldValue = number | string | boolean | Date | ObjectId | null ;
+export type FieldValue = number | string | boolean | Date | ObjectId | null;
 export type FieldOptions = {
   name: string;
   type: FieldType;
@@ -87,7 +85,6 @@ export type FieldOptions = {
 
 export type Values = { [key: string]: FieldValue };
 
-/** Relationship Types. */
 export type Relationship = {
   kind: "single" | "multiple";
   model: ModelSchema;
@@ -98,7 +95,6 @@ export type RelationshipType = {
   relationship: Relationship;
 };
 
-/** Available fields data types. */
 export const DATA_TYPES: Fields = {
   INTEGER: "integer",
   BIG_INTEGER: "bigInteger",
@@ -148,6 +144,13 @@ export const DATA_TYPES: Fields = {
     return {
       type: this.INTEGER,
       length,
+    };
+  },
+
+  array(itemType: FieldTypeString) {
+    return {
+      type: this.ARRAY,
+      items: itemType,
     };
   },
 };
