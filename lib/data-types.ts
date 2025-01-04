@@ -69,7 +69,7 @@ export type FieldProps = {
 export type FieldType = FieldTypeString | FieldProps | FieldProps[];
 
 export type FieldAlias = { [k: string]: string };
-export type FieldValue = number | string | boolean | Date | ObjectId | null;
+export type FieldValue = number | string | boolean | Date | ObjectId | null | (string[] | number[] | boolean[] | Date[] | ObjectId[]); //I think this fixes the array issue
 export type FieldOptions = { name: string; type: FieldType; defaultValue: FieldValue | (() => FieldValue) };
 export type Values = { [key: string]: FieldValue };
 
