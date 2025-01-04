@@ -20,6 +20,7 @@ export type FieldTypeString =
   | "time"
   | "timestamp"
   | "json"
+  | "array" //dont use this on sql ⚠
   | "jsonb";
 
 export type FieldTypes =
@@ -38,6 +39,7 @@ export type FieldTypes =
   | "TIME"
   | "TIMESTAMP"
   | "JSON"
+  | "ARRAY" //dont use this on sql ⚠️
   | "JSONB";
 
 export type Fields =
@@ -68,6 +70,7 @@ export type FieldProps = {
   precision?: number;
   scale?: number;
   values?: (number | string)[];
+  items?: FieldTypeString | FieldProps;
   relationship?: Relationship;
   comment?: string;
 };
@@ -116,6 +119,7 @@ export const DATA_TYPES: Fields = {
   TIMESTAMP: "timestamp",
 
   JSON: "json",
+  ARRAY: "array",
   JSONB: "jsonb",
 
   decimal(precision: number, scale?: number) {

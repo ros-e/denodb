@@ -289,7 +289,7 @@ export class MongoDBConnector implements Connector {
       for (const [field, value] of Object.entries(result)) {
         if (field === "_id") {
           formattedResult._id = (value as { $oid?: string })?.$oid || value;
-        } else if ((value as { $date?: { $numberLong: number } }).$date) {
+        } else if ((value !== null && (value as { $date?: { $numberLong: number } }).$date)) {
           formattedResult[field] = new Date((value as any).$date.$numberLong);
         } else {
           formattedResult[field] = value;
