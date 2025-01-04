@@ -19,7 +19,6 @@ export type FieldTypeString =
   | "time"
   | "timestamp"
   | "json"
-  | "array"
   | "jsonb";
 
 export type FieldTypes =
@@ -44,15 +43,9 @@ export type FieldTypes =
 export type Fields = {
   [key in FieldTypes]: FieldTypeString;
 } & {
-  decimal: (precision: number, scale?: number) => {
-    type: FieldTypeString;
-    precision: number;
-    scale?: number;
-  };
+  decimal: (precision: number, scale?: number) => { type: FieldTypeString; precision: number; scale?: number };
   string: (length: number) => { type: FieldTypeString; length: number };
-  enum: (
-    values: (number | string)[]
-  ) => { type: FieldTypeString; values: (number | string)[] };
+  enum: (values: (number | string)[]) => { type: FieldTypeString; values: (number | string)[] };
   integer: (length: number) => { type: FieldTypeString; length: number };
   array: (itemType: FieldTypeString) => { type: FieldTypeString; items: FieldTypeString };
 };
@@ -77,23 +70,11 @@ export type FieldType = FieldTypeString | FieldProps | FieldProps[];
 
 export type FieldAlias = { [k: string]: string };
 export type FieldValue = number | string | boolean | Date | ObjectId | null;
-export type FieldOptions = {
-  name: string;
-  type: FieldType;
-  defaultValue: FieldValue | (() => FieldValue);
-};
-
+export type FieldOptions = { name: string; type: FieldType; defaultValue: FieldValue | (() => FieldValue) };
 export type Values = { [key: string]: FieldValue };
 
-export type Relationship = {
-  kind: "single" | "multiple";
-  model: ModelSchema;
-};
-
-export type RelationshipType = {
-  type: FieldTypeString;
-  relationship: Relationship;
-};
+export type Relationship = { kind: "single" | "multiple"; model: ModelSchema };
+export type RelationshipType = { type: FieldTypeString; relationship: Relationship };
 
 export const DATA_TYPES: Fields = {
   INTEGER: "integer",
@@ -101,57 +82,37 @@ export const DATA_TYPES: Fields = {
   DECIMAL: "decimal",
   FLOAT: "float",
   UUID: "uuid",
-
   BOOLEAN: "boolean",
   BINARY: "binary",
-
   ENUM: "enu",
   STRING: "string",
   TEXT: "text",
-
   DATE: "date",
   DATETIME: "datetime",
   TIME: "time",
   TIMESTAMP: "timestamp",
-
   JSON: "json",
   ARRAY: "array",
   JSONB: "jsonb",
 
   decimal(precision: number, scale?: number) {
-    return {
-      type: this.DECIMAL,
-      precision,
-      scale,
-    };
+    return { type: this.DECIMAL, precision, scale };
   },
 
   string(length: number) {
-    return {
-      type: this.STRING,
-      length,
-    };
+    return { type: this.STRING, length };
   },
 
   enum(values: (number | string)[]) {
-    return {
-      type: this.ENUM,
-      values,
-    };
+    return { type: this.ENUM, values };
   },
 
   integer(length: number) {
-    return {
-      type: this.INTEGER,
-      length,
-    };
+    return { type: this.INTEGER, length };
   },
 
   array(itemType: FieldTypeString) {
-    return {
-      type: this.ARRAY,
-      items: itemType,
-    };
+    return { type: this.ARRAY, items: itemType };
   },
 };
 
