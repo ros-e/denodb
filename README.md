@@ -2,7 +2,7 @@
 
 # DenoDB
 
-**⛔️ This project is not actively maintained: expect issues, and delays in reviews**
+**⛔️ Adds Arrays to denodb
 
 - 🗣 Supports PostgreSQL, MySQL, MariaDB, SQLite and MongoDB
 - 🔥 Simple, typed API
